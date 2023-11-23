@@ -120,5 +120,8 @@
       }
     }
   },
-  "defaultProject": "eccomerce"
+  "defaultProject": "eccomerce",
+  "cli": {
+    "analytics": false
+  }
 }
