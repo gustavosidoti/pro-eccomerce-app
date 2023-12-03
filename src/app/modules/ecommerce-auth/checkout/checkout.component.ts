@@ -69,12 +69,24 @@ export class CheckoutComponent implements OnInit {
           // pass in any options from the v2 orders create call:
           // https://developer.paypal.com/api/orders/v2/#orders-create-request-body
 
+          if(this.listCarts.length == 0){
+            alertDanger("NO SE PUEDE PROCESAR UNA ORDEN SIN NINGÚN ELEMENTO DENTRO DEL CARRITO");
+            return;
+          }
+
+          if(!this.address_client_selected){
+            alertDanger("NECESITAS SELECCIONAR UNA DIRECCIÓN DE ENVÍO");
+            return;
+          }
+
+
+
           const createOrderPayload = {
             purchase_units: [
               {
                 amount: {
                     description: "COMPRAR POR EL ECOMMERCE",
-                    value: 50
+                    value: this.totalCarts
                 }
               }
             ]
@@ -88,7 +100,34 @@ export class CheckoutComponent implements OnInit {
           
           let Order = await actions.order.capture();
   
-  // Order.purchase_units[0].payments.captures[0].id
+         // Order.purchase_units[0].payments.captures[0].id
+
+         let sale = {
+          user: this.authEcommerce.authService.user._id,
+          currency_payment: 'USD',
+          method_payment: 'PAYPAL',
+          n_transaction: Order.purchase_units[0].payments.captures[0].id, 
+          total: this.totalCarts,
+         };
+
+         let sale_address = {
+          name: this.name,
+          surname: this.surname,
+          pais: this.pais,
+          address: this.address,
+          referencia: this.referencia,
+          ciudad: this.ciudad,
+          region: this.region,
+          telefono: this.telefono,
+          email: this.email,
+          nota: this.nota,
+         };
+
+         this.authEcommerce.registerSale({sale:sale, sale_address: sale_address}).subscribe((resp:any) => {
+            console.log(resp);
+            alertSuccess(resp.message);
+            location.reload();
+         })
 
          // return actions.order.capture().then(captureOrderHandler);
       },
@@ -123,7 +162,7 @@ export class CheckoutComponent implements OnInit {
     }
 
     let data = {
-      client: this.authEcommerce.authService.user._id,
+      user: this.authEcommerce.authService.user._id,
       name: this.name,
       surname: this.surname,
       pais: this.pais,
@@ -159,7 +198,7 @@ export class CheckoutComponent implements OnInit {
 
     let data = {
       _id: this.address_client_selected._id,
-      client: this.authEcommerce.authService.user._id,
+      user: this.authEcommerce.authService.user._id,
       name: this.name,
       surname: this.surname,
       pais: this.pais,

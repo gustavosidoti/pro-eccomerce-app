@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { EcommerceAuthComponent } from './ecommerce-auth.component';
 import { ListCartsComponent } from './list-carts/list-carts.component';
+import { ProfileClientComponent } from './profile-client/profile-client.component';
 
 const routes: Routes = [{
   path:'',
@@ -15,6 +16,10 @@ const routes: Routes = [{
     {
       path: "proceso-de-pago",
       component: CheckoutComponent
+    },
+    {
+      path: "perfil-del-cliente",
+      component: ProfileClientComponent
     }
   ]
 }];

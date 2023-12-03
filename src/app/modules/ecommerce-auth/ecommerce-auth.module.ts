@@ -9,10 +9,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '../../shared/shared.module';
 import { CheckoutComponent } from './checkout/checkout.component';
+import { ProfileClientComponent } from './profile-client/profile-client.component';
 
 
 @NgModule({
-  declarations: [EcommerceAuthComponent, ListCartsComponent, CheckoutComponent],
+  declarations: [EcommerceAuthComponent, ListCartsComponent, CheckoutComponent, ProfileClientComponent],
   imports: [
     CommonModule,
     EcommerceAuthRoutingModule,
