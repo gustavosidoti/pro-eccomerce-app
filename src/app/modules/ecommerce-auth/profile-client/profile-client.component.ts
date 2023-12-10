@@ -223,13 +223,13 @@ export class ProfileClientComponent implements OnInit {
       password:this.password_c,
     }
 
-    this.authEcommerceService.updateProfileClient(data).subscribe{(resp:any) => {
+    this.authEcommerceService.updateProfileClient(data).subscribe((resp:any) => {
       console.log(resp);
       alertSuccess(resp.message)
       if(resp.user){
         localStorage.setItem("user",JSON.stringify(resp.user));
       }
-    }}
+    })
   }
 
   // Reseñas

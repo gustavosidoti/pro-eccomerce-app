@@ -25,6 +25,11 @@ export class LandingProductComponent implements OnInit {
   product_selected_modal:any = null;
   related_products:any = [];
   variedad_selected:any = null;
+  psubtotal:any = null;
+
+  discount_id:any;
+  SALE_FLASH:any = null;
+
   constructor(
     public ecommerce_guest: EcommerceGuestService,
     public router: Router,
@@ -35,13 +40,20 @@ export class LandingProductComponent implements OnInit {
   ngOnInit(): void {
     this.routerActived.params.subscribe((resp:any) =>{
       this.slug = resp["slug"];
+      
     })
-    console.log(this.slug);
 
-    this.ecommerce_guest.showLandingProduct(this.slug).subscribe((resp:any) =>{
+    // extraemos el id del descuento de los parametros de ruta
+    this.routerActived.queryParams.subscribe((resp:any) => {
+      this.discount_id = resp["_id"];
+    })
+    
+
+    this.ecommerce_guest.showLandingProduct(this.slug, this.discount_id).subscribe((resp:any) =>{
       console.log(resp);
       this.product_selected = resp.product;
       this.related_products = resp.related_products;
+      this.SALE_FLASH = resp.SALE_FLASH;
       // para que cargue los estilos
       setTimeout(() => {
         LandingProductDetail()
@@ -74,6 +86,19 @@ export class LandingProductComponent implements OnInit {
 
   selectedVariedad(variedad:any){
     this.variedad_selected = variedad;
+  }
+
+  getDiscount(){
+    let discount = 0;
+    if(this.SALE_FLASH){
+      if(this.SALE_FLASH.type_discount == 0){
+        return this.SALE_FLASH.discount * this.product_selected.priceUSD * 0.01;
+      }else{
+        return this.SALE_FLASH.discount;
+      }
+    } 
+    // sino viene nada se retorna 0;
+   return discount;
   }
 
   addCart(product:any){
@@ -109,20 +134,20 @@ export class LandingProductComponent implements OnInit {
       }
     }
 
-    let psubtotal:any = $("#qty-cart").val();
+    this.psubtotal = $("#qty-cart").val();
 
     let data = {
       user: this.cartService._authService.user._id,
       product: this.product_selected._id,
-      type_discount: null,
-      discount: 0,
+      type_discount: this.SALE_FLASH ?  this.SALE_FLASH.type_discount : null,
+      discount: this.SALE_FLASH ?  this.SALE_FLASH.discount : 0,
       cantidad: $("#qty-cart").val(),
       variedad: this.variedad_selected ? this.variedad_selected._id : null,
       code_cupon: null,
-      code_discount: null,
+      code_discount: this.SALE_FLASH ? this.SALE_FLASH._id : null,
       price_unitario: this.product_selected.priceUSD,
-      subtotal: this.product_selected.priceUSD,
-      total: this.product_selected.priceUSD*psubtotal
+      subtotal: this.product_selected.priceUSD - this.getDiscount(),
+      total: (this.product_selected.priceUSD - this.getDiscount()) * this.psubtotal,
     }
 
     // Registramos el carro
@@ -131,6 +156,7 @@ export class LandingProductComponent implements OnInit {
         alertDanger(resp.message_text);
         return;
       }else{
+        
         this.cartService.changeCart(resp.cart);
         alertSuccess("EL PRODUCTO SE HA AGREGADO EXITOSAMENTE AL CARRO")
       }

@@ -30,8 +30,8 @@ function HOMEINITTEMPLATE($, undefined) {
             axilInit.countdownInit('.coming-countdown', '2022/10/01');
             axilInit.campaignCountdown('.campaign-countdown', '2022/10/01');
             axilInit.countdownInit('.poster-countdown', '2022/10/01');
-            axilInit.countdownInit('.sale-countdown', '2023/12/31');
-            axilInit.sideOffcanvasToggle('.cart-dropdown-btn', '#cart-dropdown');
+            //axilInit.countdownInit('.sale-countdown', '2023/12/31');
+            //axilInit.sideOffcanvasToggle('.cart-dropdown-btn', '#cart-dropdown');
             axilInit.sideOffcanvasToggle('.mobile-nav-toggler', '.header-main-nav');
             axilInit.sideOffcanvasToggle('.department-side-menu', '.department-nav-menu');
             axilInit.sideOffcanvasToggle('.filter-toggle', '.axil-shop-sidebar');
