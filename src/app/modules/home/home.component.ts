@@ -78,4 +78,26 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  // los descuentos
+  getDiscountProduct(bestProd:any){
+    if(bestProd.campaing_discount){
+      if(bestProd.campaing_discount.type_discount == 1){ // 1 es porcentaje
+        return bestProd.priceUSD*bestProd.campaing_discount.discount*0.01;
+      }else{ // 2 es moneda
+        return bestProd.campaing_discount.discount;
+      }
+    }
+    return 0;
+  }
+
+  // si seleccionamos un producto para que no se pierda el descuento en el detalle
+  getRouterDiscount(bestProd:any){
+    
+    if(bestProd.campaing_discount){
+      return {_id: bestProd.campaing_discount._id};
+    }
+
+    return {};
+  }
+
 }
