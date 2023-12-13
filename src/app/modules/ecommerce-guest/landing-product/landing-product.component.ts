@@ -30,6 +30,10 @@ export class LandingProductComponent implements OnInit {
   discount_id:any;
   SALE_FLASH:any = null;
 
+  REVIEWS: any;
+  AVG_REVIEW: any;
+  COUNT_REVIEW: any;
+
   constructor(
     public ecommerce_guest: EcommerceGuestService,
     public router: Router,
@@ -54,6 +58,9 @@ export class LandingProductComponent implements OnInit {
       this.product_selected = resp.product;
       this.related_products = resp.related_products;
       this.SALE_FLASH = resp.SALE_FLASH;
+      this.REVIEWS = resp.REVIEWS;
+      this.AVG_REVIEW = resp.AVG_REVIEW;
+      this.COUNT_REVIEW = resp.COUNT_REVIEW;
       // para que cargue los estilos
       setTimeout(() => {
         LandingProductDetail()
