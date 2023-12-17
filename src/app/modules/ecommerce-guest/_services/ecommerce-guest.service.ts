@@ -11,17 +11,24 @@ export class EcommerceGuestService {
     public http: HttpClient,
   ) { }
 
-  showLandingProduct(slug:string, discount_id:any=null){
-
+  showLandingProduct(slug:string,discount_id:any = null){
     let LINK = "";
-
-    // validamos si viene en la ruta el id de descuento
     if(discount_id){
       LINK = "?_id="+discount_id;
     }
-
     let URL = URL_SERVICIOS+"/home/landing-product/"+slug+LINK;
     return this.http.get(URL);
+  }
+
+  configInitial(){
+    let URL = URL_SERVICIOS+"/home/config_initial";
+    return this.http.get(URL);
+  }
+
+  filterProduct(data:any){
+    let TIME_NOW = new Date().getTime();
+    let URL = URL_SERVICIOS+"home/filter_products?TIME_NOW="+TIME_NOW;
+    return this.http.post(URL,data);
   }
 
 }

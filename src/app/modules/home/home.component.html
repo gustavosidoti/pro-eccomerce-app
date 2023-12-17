@@ -501,7 +501,7 @@
                                         <h5 class="title"><a [routerLink]="[ '/landing-producto/', best_product.slug ]">{{ best_product.title }}</a></h5>
                                         <div class="product-price-variant">
                                             <!-- <span class="price old-price">$50</span> -->
-                                            <span class="price current-price">{{ best_product.priceUSD }} USD</span>
+                                            <span class="price current-price">{{ best_product.price_usd }} USD</span>
                                         </div>
                                     </div>
                                     <div class="product-hover-action">
@@ -663,8 +663,8 @@
                                             </div>
                                         </div>
                                         <h3 class="product-title">{{ product_selected.title }}</h3>
-                                        <span class="price-amount" *ngIf="!product_selected.FlashSale">{{ product_selected.priceUSD }} USD</span>
-                                        <span class="price-amount" *ngIf="product_selected.FlashSale"> <del>{{ product_selected.priceUSD }} USD</del> </span>
+                                        <span class="price-amount" *ngIf="!product_selected.FlashSale">{{ product_selected.price_usd }} USD</span>
+                                        <span class="price-amount" *ngIf="product_selected.FlashSale"> <del>{{ product_selected.price_usd }} USD</del> </span>
                                         <span class="price-amount" *ngIf="product_selected.FlashSale"> {{ getCalNewPrice(product_selected) }} USD</span>
                                         <ul class="product-meta">
                                             <li><i class="fal fa-check"></i>In stock</li>

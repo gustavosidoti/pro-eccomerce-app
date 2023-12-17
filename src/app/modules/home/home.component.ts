@@ -1,9 +1,15 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { CartService } from '../ecommerce-guest/_services/cart.service';
 import { HomeService } from './_services/home.service';
 
 declare var $:any;
 declare function HOMEINITTEMPLATE([]):any;
 declare function ModalProductDetail():any;
+
+// alertas
+declare function alertDanger([]):any;
+declare function alertSuccess([]):any;
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -20,6 +26,8 @@ export class HomeComponent implements OnInit {
   FlashProductList:any = [];
   constructor(
     public homeService: HomeService,
+    public cartService: CartService,
+    public router: Router
   ) { }
 
   ngOnInit(): void {
@@ -79,13 +87,27 @@ export class HomeComponent implements OnInit {
   }
 
   // los descuentos
-  getDiscountProduct(bestProd:any){
-    if(bestProd.campaing_discount){
-      if(bestProd.campaing_discount.type_discount == 1){ // 1 es porcentaje
-        return bestProd.priceUSD*bestProd.campaing_discount.discount*0.01;
-      }else{ // 2 es moneda
-        return bestProd.campaing_discount.discount;
+  getDiscountProduct(bestProd:any, is_sale_flash:any = null ){
+
+    // verificamos si se trata de una venta flash
+    if(is_sale_flash){
+  
+        if(this.FlashSale.type_discount == 1){ // 1 es porcentaje
+          return bestProd.priceUSD*bestProd.FlashSale.discount*0.01;
+        }else{ // 2 es moneda
+          return bestProd.FlashSale.discount;
+        }
+      
+
+    }else{
+      if(bestProd.campaing_discount){
+        if(bestProd.campaing_discount.type_discount == 1){ // 1 es porcentaje
+          return bestProd.priceUSD*bestProd.campaing_discount.discount*0.01;
+        }else{ // 2 es moneda
+          return bestProd.campaing_discount.discount;
+        }
       }
+
     }
     return 0;
   }
@@ -98,6 +120,94 @@ export class HomeComponent implements OnInit {
     }
 
     return {};
+  }
+
+  addCart(product:any, is_sale_flash:any = null){
+    
+    // VALIDACION 1 estar autenticado
+    if(!this.cartService._authService.user){
+
+      alertDanger("NECESITAS AUTENTICARTE PARA PODER AGREGAR EL PRODUCTO AL CARRITO")
+      return;
+    }
+
+    // VALIDACION 2 que haya cantidad seleccionada superior a 0
+    if($("#qty-cart").val() == 0){ // obtenemos con jquery el id del input cantidad
+      alertDanger("NECESITAS AGREGAR UNA CANTIDAD MAYOR A 0 DEL PRODUCTO")
+      return;
+    }
+
+    // VALIDACION 3 si se trata de un producto con multiples variedades
+    if(product.type_inventario == 2){
+
+      // si viene el id de la venta flash entra por acá y se mostrará el descuento en el landing
+      let LINK_DISCOUNT = "";
+      if(is_sale_flash){
+        LINK_DISCOUNT = "?_id="+this.FlashSale._id;
+      }else{
+        // si no viene el id preguntamos si tiene campaña de descuento
+        if(product.campaing_discount){
+          LINK_DISCOUNT = "?_id="+product.campaing_discount._id; 
+        }
+      }
+      
+      this.router.navigateByUrl("/landing-producto/"+product.slug+LINK_DISCOUNT);
+    }
+
+    let type_discount = null;
+    let discount = null;
+    let code_discount = null;
+
+    if(is_sale_flash){
+        
+      type_discount = this.FlashSale.type_discount;
+      discount = this.FlashSale.discount,
+      code_discount = this.FlashSale._id;
+
+
+    }else{
+      if(product.campaing_discount){
+        
+        type_discount = product.campaing_discount.type_discount;
+        discount = product.campaing_discount.discount,
+        code_discount = product.campaing_discount._id;
+
+      }
+    }
+
+    let data = {
+      user: this.cartService._authService.user._id,
+      product: product._id,
+      type_discount: type_discount,
+      discount: discount,
+      cantidad: 1,
+      variedad: null,
+      code_cupon: null,
+      code_discount: code_discount,
+      price_unitario: product.priceUSD,
+      subtotal: product.priceUSD - this.getDiscountProduct(product, is_sale_flash),
+      total: (product.priceUSD - this.getDiscountProduct(product, is_sale_flash)) * 1
+    }
+
+    // Registramos el carro
+    this.cartService.registerCart(data).subscribe((resp:any) => {
+      if(resp.message == 403){
+        alertDanger(resp.message_text);
+        return;
+      }else{
+        
+        this.cartService.changeCart(resp.cart);
+        alertSuccess("EL PRODUCTO SE HA AGREGADO EXITOSAMENTE AL CARRO")
+      }
+      // SI HAY UN ERROR DE TOKEN NOS SALDRÁ POR AQUÍ
+    }, error => {
+      console.log(error);
+      if(error.error.message == "EL TOKEN NO ES VÁLIDO"){
+        this.cartService._authService.logOut();
+      }
+    })
+    //le avisamos al observable que la lista del carro cambió
+    this.cartService.changeCart(product);
   }
 
 }

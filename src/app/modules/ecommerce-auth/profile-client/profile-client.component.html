@@ -50,7 +50,7 @@
                                     <a class="nav-item nav-link" data-bs-toggle="tab" href="#nav-downloads" role="tab" aria-selected="false"><i class="fas fa-file-download"></i>Downloads</a>
                                     <a class="nav-item nav-link" data-bs-toggle="tab" href="#nav-address" role="tab" aria-selected="false"><i class="fas fa-home"></i>Addresses</a>
                                     <a class="nav-item nav-link" data-bs-toggle="tab" href="#nav-account" role="tab" aria-selected="false"><i class="fas fa-user"></i>Account Details</a>
-                                    <a class="nav-item nav-link" href="#" onclick="return false;" (click)="logout()"  ><i class="fal fa-sign-out"></i>Logout</a>
+                                    <a class="nav-item nav-link" href="#" onclick="return false;" (click)="logout()"><i class="fal fa-sign-out"></i>Logout</a>
                                 </div>
                             </nav>
                         </aside>
@@ -71,14 +71,13 @@
                                                 <tr>
                                                     <th scope="col">Order</th>
                                                     <th scope="col">Fecha</th>
-                                                    <th scope="col">Método de pago</th>
+                                                    <th scope="col">Metodo de pago</th>
                                                     <th scope="col">Total</th>
                                                     <th scope="col">Acción</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <ng-container *ngFor="let order of sale_orders">
-
                                                     <tr>
                                                         <th scope="row">#{{ order.sale._id }}</th>
                                                         <td>{{ getDate(order.sale.createdAt) }}</td>
@@ -93,7 +92,7 @@
                                         </table>
                                     </div>
 
-                                    <ng-container *ngIf="!is_detail_sale">
+                                    <ng-container *ngIf="!sale_detail_selected">
                                         <div class="table-responsive" *ngIf="is_detail_sale">
                                             <table class="table">
                                                 <thead>
@@ -103,41 +102,40 @@
                                                         <th scope="col">Categoria</th>
                                                         <th scope="col">Cantidad</th>
                                                         <th scope="col">Total</th>
-                                
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     <ng-container *ngFor="let sale_detail of order_selected.sale_details">
-    
                                                         <tr>
                                                             <th scope="row">#{{ sale_detail.product.title }}</th>
-                                                            <td> <img [src]="sale_detail.product.imagen" alt="" width="100"></td>
-                                                            <td>{{ sale_detail.product.categorie.title }}</td>
+                                                            <td> <img [src]="sale_detail.product.imagen" width="100" alt=""> </td>
+                                                            <td>{{ sale_detail.product.categorie.title  }}</td>
                                                             <td>{{ sale_detail.cantidad }}</td>
                                                             <td>{{ sale_detail.total }} USD</td>
-                                                            <td><a href="#" onclick="return false;" (click)="viewReview(sale_detail)" class="axil-btn view-btn">Reseña</a></td>
-                                                            
+                                                            <td><a href="#" onclick="return false;" (click)="viewReview(sale_detail)" class="axil-btn view-btn">RESEÑA</a></td>
                                                         </tr>
                                                     </ng-container>
+                                                    
+                                                    
                                                 </tbody>
                                             </table>
                                         </div>
                                         <a href="#" onclick="return false;" *ngIf="is_detail_sale" (click)="goHome()" class="axil-btn view-btn">REGRESAR</a>
                                     </ng-container>
+                                    
 
-                                    <ng-container *ngIf="sale_detail_selected" >
+                                    <ng-container *ngIf="sale_detail_selected">
                                         <!-- Start Comment Respond  -->
-                                        <div class="comment-respond pro-des-commend-respond mt--0" >
+                                        <div class="comment-respond pro-des-commend-respond mt--0">
                                             <h5 class="title mb--30">Add a Review</h5>
-                                            
                                             <div class="rating-wrapper d-flex-center mb--40">
                                                 Your Rating <span class="require">*</span>
                                                 <div class="reating-inner ml--20">
-                                                    <a href="#" onclick="return false;" ngClass="{'star': cantidad == 1}" (click)="addCantidad(1)" ><i class="fal fa-star"></i></a>
-                                                    <a href="#" onclick="return false;" ngClass="{'star': cantidad == 2}" (click)="addCantidad(2)" ><i class="fal fa-star"></i></a>
-                                                    <a href="#" onclick="return false;" ngClass="{'star': cantidad == 3}" (click)="addCantidad(3)" ><i class="fal fa-star"></i></a>
-                                                    <a href="#" onclick="return false;" ngClass="{'star': cantidad == 4}" (click)="addCantidad(4)" ><i class="fal fa-star"></i></a>
-                                                    <a href="#" onclick="return false;" ngClass="{'star': cantidad == 5}" (click)="addCantidad(5)" ><i class="fal fa-star"></i></a>
+                                                    <a href="#" onclick="return false;" [ngClass]="{'star': cantidad == 1}" (click)="addCantidad(1)"><i class="fal fa-star"></i></a>
+                                                    <a href="#" onclick="return false;" [ngClass]="{'star': cantidad == 2}" (click)="addCantidad(2)"><i class="fal fa-star"></i></a>
+                                                    <a href="#" onclick="return false;" [ngClass]="{'star': cantidad == 3}" (click)="addCantidad(3)"><i class="fal fa-star"></i></a>
+                                                    <a href="#" onclick="return false;" [ngClass]="{'star': cantidad == 4}" (click)="addCantidad(4)"><i class="fal fa-star"></i></a>
+                                                    <a href="#" onclick="return false;" [ngClass]="{'star': cantidad == 5}" (click)="addCantidad(5)"><i class="fal fa-star"></i></a>
                                                 </div>
                                             </div>
     
@@ -149,11 +147,10 @@
                                                             <textarea name="description" [(ngModel)]="description" placeholder="Your Comment"></textarea>
                                                         </div>
                                                     </div>
-                                                    
                                                     <div class="col-lg-12">
                                                         <div class="form-submit">
-                                                            <button type="button" id="submit" *ngIf="!sale_detail_selected.review" (click)="save()" class="axil-btn btn-bg-primary w-auto">GUARDAR RESEÑA</button>
-                                                            <button type="button" id="submit" *ngIf="sale_detail_selected.review" (click)="save()" class="axil-btn btn-bg-primary w-auto">ACTUALIZAR RESEÑA</button>
+                                                            <button type="button" *ngIf="!sale_detail_selected.review" (click)="save()" class="axil-btn btn-bg-primary w-auto">GUARDAR RESEÑA</button>
+                                                            <button type="button" *ngIf="sale_detail_selected.review" (click)="save()" class="axil-btn btn-bg-primary w-auto">GUARDAR CAMBIOS DE RESEÑA</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -163,7 +160,6 @@
                                         <!-- End Comment Respond  -->
                                     </ng-container>
                                     
-                                
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="nav-downloads" role="tabpanel">
@@ -179,43 +175,25 @@
                                             <div class="axil-checkout-notice">
                                                 <div class="tab-pane" id="nav-address" role="tabpanel">
                                                     <div class="axil-dashboard-address">
-                                                        <!--<p class="notice-text">The following addresses will be used on the checkout page by default.</p> -->
-                                                        <a href="#" onclick="return false;" class="btn btn-success mr-2" type="reset" (click)="newAddress()" >NUEVA DIRECCION +</a>
+                                                        <!-- <p class="notice-text">.</p> -->
+                                                        <a href="#" onclick="return false;" (click)="newAddress()">NUEVA DIRECCIÓN +</a>
                                                         <div class="row row--30">
-                    
                                                             <ng-container *ngFor="let list_address of listAddressClient;let i=index">
                                                                 <div class="col-lg-6">
                                                                     <div class="address-info mb--40">
                                                                         <div class="addrss-header d-flex align-items-center justify-content-between">
-                                                                            <h4 class="title mb-0">Dirección: #{{ i+1 }} </h4>
-                                                                            <a href="#" onclick="return false;"  class="address-edit" (click)="addressClientSelected(list_address)" ><i class="far fa-edit"></i></a>
+                                                                            <h4 class="title mb-0">Dirección: #{{ i+1 }}</h4>
+                                                                            <a href="#" onclick="return false;" class="address-edit" (click)="addressClientSelected(list_address)"><i class="far fa-edit"></i></a>
                                                                         </div>
                                                                         <ul class="address-details">
-                                                                            <li>Nombre y Apellido: {{ list_address.name + ' ' + list_address.surname }} </li>
-                                                                            <li>Email: {{ list_address.email }} </li>
-                                                                            <li>Teléfono: {{ list_address.telefono }} </li>
-                                                                            <li class="mt--30"> {{ list_address.address }} </li>
+                                                                            <li>Nombre y apellido: {{ list_address.name + ' ' +list_address.surname }}</li>
+                                                                            <li>Email: {{ list_address.email }}</li>
+                                                                            <li>Telefono: {{ list_address.telefono }}</li>
+                                                                            <li class="mt--30">{{ list_address.address }}</li>
                                                                         </ul>
                                                                     </div>
                                                                 </div>
                                                             </ng-container>
-                                                            
-                    
-                                                            <!--<div class="col-lg-6">
-                                                                <div class="address-info">
-                                                                    <div class="addrss-header d-flex align-items-center justify-content-between">
-                                                                        <h4 class="title mb-0">Billing Address</h4>
-                                                                        <a href="#" class="address-edit"><i class="far fa-edit"></i></a>
-                                                                    </div>
-                                                                    <ul class="address-details">
-                                                                        <li>Name: Annie Mario</li>
-                                                                        <li>Email: annie@example.com</li>
-                                                                        <li>Phone: 1234 567890</li>
-                                                                        <li class="mt--30">7398 Smoke Ranch Road <br>
-                                                                        Las Vegas, Nevada 89128</li>
-                                                                    </ul>
-                                                                </div>
-                                                            </div> -->
                                                         </div>
                                                     </div>
                                                 </div>
@@ -236,16 +214,14 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                
                                                 <div class="form-group">
-                                                    <label> País <span>*</span></label>
-                                                    <select id="Region" [(ngModel)]="pais" name="pais" >
-                                                        <option value="Australia">Australia</option>
-                                                        <option value="England">England</option>
-                                                        <option value="New Zealand">New Zealand</option>
-                                                        <option value="Switzerland">Switzerland</option>
-                                                        <option value="United Kindom">United Kindom (UK)</option>
-                                                        <option value="United States">United States (USA)</option>
+                                                    <label>Pais <span>*</span></label>
+                                                    <select id="Region" [(ngModel)]="pais" name="pais">
+                                                        <option value="Peru">Peru</option>
+                                                        <option value="Argentina">Argentina</option>
+                                                        <option value="Colombia">Colombia</option>
+                                                        <option value="Chile">Chile</option>
+                                                        <option value="Brazil">Brazil</option>
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
@@ -262,7 +238,7 @@
                                                     <input type="text" [(ngModel)]="ciudad" name="ciudad" id="town">
                                                 </div>
                                                 <div class="form-group">
-                                                    <label>Teléfono <span>*</span></label>
+                                                    <label>Telefono <span>*</span></label>
                                                     <input type="tel" [(ngModel)]="telefono" name="telefono" id="phone">
                                                 </div>
                                                 <div class="form-group">
@@ -270,16 +246,11 @@
                                                     <input type="email" [(ngModel)]="email" name="email" id="email">
                                                 </div>
                                                 <div class="form-group">
-                                                    <label>Notas (opcional)</label>
-                                                    <textarea id="notes" [(ngModel)]="nota" name="nota" rows="2" placeholder="Notes about your order, e.g. speacial notes for delivery."></textarea>
+                                                    <label>Notas (optional)</label>
+                                                    <textarea id="notes" rows="2" [(ngModel)]="nota" name="nota" placeholder="Notes about your order, e.g. speacial notes for delivery."></textarea>
                                                 </div>
-                                                <div class="form-group input-group">
-                                                    <input type="checkbox" id="checkbox1" name="account-create">
-                                                    <label for="checkbox1">Create an account</label>
-                                                </div>
-                                                
-                                                <button type="button" *ngIf="!address_client_selected"  (click)="store()" class="axil-btn btn-bg-primary checkout-btn">REGISTRAR DIRECCION</button>
-                                                <button type="button" *ngIf="address_client_selected"  (click)="store()" class="axil-btn btn-bg-primary checkout-btn">GUARDAR DIRECCION</button>
+                                                <button type="button" *ngIf="!address_client_selected" (click)="store()" class="axil-btn btn-bg-primary checkout-btn">REGISTRAR DIRECCIÓN</button>
+                                                <button type="button" *ngIf="address_client_selected" (click)="store()" class="axil-btn btn-bg-primary checkout-btn">GUARDAR CAMBIOS DIRECCIÓN</button>
                                             </div>
                                         </div>
                                     </div>
@@ -293,31 +264,30 @@
                                                 <div class="col-lg-6">
                                                     <div class="form-group">
                                                         <label>First Name</label>
-                                                        <input type="text" class="form-control" [(ngModel)]="name_c" name="name_c">
+                                                        <input type="text" class="form-control"  [(ngModel)]="name_c" name="name_c">
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <div class="form-group">
                                                         <label>Last Name</label>
-                                                        <input type="text" class="form-control" [(ngModel)]="surname_c" name="surname_c">
+                                                        <input type="text" class="form-control"  [(ngModel)]="surname_c" name="surname_c">
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-12">
+                                                <div class="col-12">
                                                     <div class="form-group mb--40">
-                                                        <label>Email</label>
-                                                        <input type="text" class="form-control" [(ngModel)]="email_c" name="email_c">
+                                                        <label>Email:</label>
+                                                        <input type="text" class="form-control"  [(ngModel)]="email_c" name="email_c">
                                                     </div>
                                                 </div>
                                                 <div class="col-12">
                                                     <h5 class="title">Password Change</h5>
-                                                    
                                                     <div class="form-group">
                                                         <label>New Password</label>
-                                                        <input type="password" class="form-control" [(ngModel)]="password_c" name="password_c">
+                                                        <input type="password" [(ngModel)]="password_c" name="password_c" class="form-control">
                                                     </div>
                                                     <div class="form-group">
                                                         <label>Confirm New Password</label>
-                                                        <input type="password" class="form-control" [(ngModel)]="password_repet_c" name="password_repet_c">
+                                                        <input type="password" [(ngModel)]="password_repet_c" name="password_repet_c" class="form-control">
                                                     </div>
                                                     <div class="form-group mb--0">
                                                         <input type="button" (click)="updateProfileClient()" class="axil-btn" value="Save Changes">

@@ -8,10 +8,11 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FiltersProductsComponent } from './filters-products/filters-products.component';
 
 
 @NgModule({
-  declarations: [EcommerceGuestComponent, LandingProductComponent],
+  declarations: [EcommerceGuestComponent, LandingProductComponent, FiltersProductsComponent],
   imports: [
     CommonModule,
     EcommerceGuestRoutingModule,

@@ -25,7 +25,7 @@ export class LandingProductComponent implements OnInit {
   product_selected_modal:any = null;
   related_products:any = [];
   variedad_selected:any = null;
-  psubtotal:any = null;
+  
 
   discount_id:any;
   SALE_FLASH:any = null;
@@ -141,9 +141,8 @@ export class LandingProductComponent implements OnInit {
       }
     }
 
-    this.psubtotal = $("#qty-cart").val();
 
-    let data = {
+    let data:any = {
       user: this.cartService._authService.user._id,
       product: this.product_selected._id,
       type_discount: this.SALE_FLASH ?  this.SALE_FLASH.type_discount : null,
@@ -154,7 +153,7 @@ export class LandingProductComponent implements OnInit {
       code_discount: this.SALE_FLASH ? this.SALE_FLASH._id : null,
       price_unitario: this.product_selected.priceUSD,
       subtotal: this.product_selected.priceUSD - this.getDiscount(),
-      total: (this.product_selected.priceUSD - this.getDiscount()) * this.psubtotal,
+      total: (this.product_selected.priceUSD - this.getDiscount())* (+$("#qty-cart").val()),
     }
 
     // Registramos el carro
