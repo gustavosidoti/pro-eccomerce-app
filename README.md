@@ -24,8 +24,8 @@ It is an e-commerce store for purchasing products, with offers, coupons, and dis
 <img align="center" src="https://res.cloudinary.com/dsnccd8pt/image/upload/v1705162096/E-commerce/10_fwmons.png" alt="https://www.linkedin.com/in/gustavo-sidoti/" height="600" width="1000" />
 <img align="center" src="https://res.cloudinary.com/dsnccd8pt/image/upload/v1705162096/E-commerce/5_wrugxw.png" alt="https://www.linkedin.com/in/gustavo-sidoti/" height="600" width="1000" />
 <img align="center" src="https://res.cloudinary.com/dsnccd8pt/image/upload/v1705162095/E-commerce/3_r3cwyd.png" alt="https://www.linkedin.com/in/gustavo-sidoti/" height="600" width="1000" />
-<img align="center" src="https://res.cloudinary.com/dsnccd8pt/image/upload/v1705162096/E-commerce/6_f2xluj.png" alt="https://www.linkedin.com/in/gustavo-sidoti/" height="600" width="1000" />
-<img align="center" src="https://res.cloudinary.com/dsnccd8pt/image/upload/v1705162095/E-commerce/7_ygg57z.png" alt="https://www.linkedin.com/in/gustavo-sidoti/" height="600" width="1000" />" 
+<img align="center" src="https://res.cloudinary.com/dsnccd8pt/image/upload/v1705162096/E-commerce/6_f2xluj.png" alt="https://www.linkedin.com/in/gustavo-sidoti/" height="1200" width="1000" />
+<img align="center" src="https://res.cloudinary.com/dsnccd8pt/image/upload/v1705162095/E-commerce/7_ygg57z.png" alt="https://www.linkedin.com/in/gustavo-sidoti/" height="800" width="600" />" 
 <img align="center" src="https://res.cloudinary.com/dsnccd8pt/image/upload/v1705162095/E-commerce/8_fbtqau.png" alt="https://www.linkedin.com/in/gustavo-sidoti/" height="600" width="1000" />
 <img align="center" src="https://res.cloudinary.com/dsnccd8pt/image/upload/v1705162096/E-commerce/9_a9wpdc.png" alt="https://www.linkedin.com/in/gustavo-sidoti/" height="600" width="1000" />
 
